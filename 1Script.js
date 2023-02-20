@@ -2,7 +2,7 @@
 import { solveCct } from '/scripts/prod/contractsLib.js';
 import { wkn, grw, hak } from 'scripts/prod/lib.js';
 export async function main(ns) {
-	ns.tail();
+	//DEBUG: ns.tail();
 
 	function ramAvail(svr = new String) { return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); }
 
