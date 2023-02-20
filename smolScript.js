@@ -1,5 +1,5 @@
 /** @param {NS} ns */
-import { wkn, grw } from '/scripts/prod/lib.js';
+import { wkn, grw } from 'lib.js';
 export async function main(ns) {
 	function ramAvail(svr = new String) {
 		return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr);
@@ -118,7 +118,7 @@ export async function main(ns) {
 
 	//Start of real main
 	//DEBUG: ns.tail();
-	let sngl = '/scripts/prod/singles.js'
+	let sngl = 'singles.js'
 	while (true) {
 		for (let target of svrScan().targets) {
 			while (ns.getServerMaxMoney(target) > ns.getServerMoneyAvailable(target)) {

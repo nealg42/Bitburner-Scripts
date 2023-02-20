@@ -1,5 +1,5 @@
 /** @param {NS} ns */
-import { solveCct } from '/scripts/prod/contractsLib.js';
+import { solveCct } from 'contractsLib.js';
 import { wkn, grw, hak } from 'scripts/prod/lib.js';
 export async function main(ns) {
 	//DEBUG: ns.tail();
@@ -131,14 +131,14 @@ export async function main(ns) {
 
 	//Start of real main
 	//DEBUG: ns.tail();
-	let hacnet = '/scripts/prod/hacknet.js';
-	if (ramAvail('home') < 1) { ns.spawn('/scripts/prod/smolScript.js'); }
+	let hacnet = 'hacknet.js';
+	if (ramAvail('home') < 1) { ns.spawn('smolScript.js'); }
 	else if (ns.getRunningScript(hacnet, 'home') == null &&
 		ramAvail('home') > ns.getScriptRam(hacnet)) {
-		ns.run('/scripts/prod/hacknet.js');
+		ns.run('hacknet.js');
 	}
 
-	const batMkr = '/scripts/prod/batchMaker.js';
+	const batMkr = 'batchMaker.js';
 	while (true) {
 		for (let target of svrScan().targets) {
 			if (ns.getRunningScript(batMkr, 'home', target) == null && ramAvail('home') > ns.getScriptRam(batMkr)) {

@@ -101,7 +101,7 @@ export function solveCct(type = new String, data) {
 				return binary;
 			}
 			let bin = toBinary(data);
-			return 'No solution ready'; //TODO: nano /scripts/prod/test_Hamming.js
+			return 'No solution ready'; //TODO: nano test_Hamming.js
 
 		case 'HammingCodes Encoded Binary to Integer':
 			return 'No solution ready'; //TODO: atmpt

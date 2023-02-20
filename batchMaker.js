@@ -1,5 +1,5 @@
 /** @param {NS} ns */
-import { grw, hak, wkn } from '/scripts/prod/lib.js'
+import { grw, hak, wkn } from 'lib.js'
 export async function main(ns) {
 	//ns.tail();
 	function ramAvail(svr = new String) { return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); }
