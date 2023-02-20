@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 import { solveCct } from 'contractsLib.js';
-import { wkn, grw, hak } from 'scripts/prod/lib.js';
+import { wkn, grw, hak } from 'lib.js';
 export async function main(ns) {
 	//DEBUG: ns.tail();
 
