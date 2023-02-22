@@ -130,7 +130,7 @@ export async function main(ns) {
 				await ns.sleep(Math.ceil(ns.getGrowTime(target)) + 2000);
 			}
 			let sThread = Math.floor(ramAvail(target) / ns.getScriptRam(sngl));
-			if (sThread > 0) {
+			if (sThread > 0 && ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target)) {
 				ns.scp(sngl, target, 'home');
 				ns.exec(sngl, target, Math.floor(ramAvail(target) / 2.40), target);
 			}
