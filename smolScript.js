@@ -1,5 +1,5 @@
 /** @param {NS} ns */
-import { wkn, grw } from '/scripts/prod/lib.js';
+import { wkn, grw } from 'lib.js';
 export async function main(ns) {
 	function ramAvail(svr = new String) {
 		return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr);
@@ -118,7 +118,7 @@ export async function main(ns) {
 
 	//Start of real main
 	//DEBUG: ns.tail();
-	let sngl = '/scripts/prod/singles.js'
+	let sngl = 'singles.js'
 	while (true) {
 		for (let target of svrScan().targets) {
 			while (ns.getServerMaxMoney(target) > ns.getServerMoneyAvailable(target)) {
@@ -130,7 +130,7 @@ export async function main(ns) {
 				await ns.sleep(Math.ceil(ns.getGrowTime(target)) + 2000);
 			}
 			let sThread = Math.floor(ramAvail(target) / ns.getScriptRam(sngl));
-			if (sThread > 0) {
+			if (sThread > 0 && ns.getHackingLevel() >= ns.getServerRequiredHackingLevel(target)) {
 				ns.scp(sngl, target, 'home');
 				ns.exec(sngl, target, Math.floor(ramAvail(target) / 2.40), target);
 			}

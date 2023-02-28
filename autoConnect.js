@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 export async function main(ns) {
-	let servers = ['home'];		//vars that will be returned
+	let servers = ['home'];
 	let routes = new Object;
 
 	let delta = 0;

@@ -28,7 +28,6 @@ export function solveCct(type = new String, data) {
 			for (let factor of revFactors) {
 				if (isPrime(factor)) {
 					return factor;
-
 				}
 			}
 
@@ -101,7 +100,7 @@ export function solveCct(type = new String, data) {
 				return binary;
 			}
 			let bin = toBinary(data);
-			return 'No solution ready'; //TODO: nano /scripts/prod/test_Hamming.js
+			return 'No solution ready'; //TODO: atmpt
 
 		case 'HammingCodes Encoded Binary to Integer':
 			return 'No solution ready'; //TODO: atmpt
