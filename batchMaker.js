@@ -100,7 +100,7 @@ export async function main(ns) {
 		if (hDelay < 0) { hDelay = 0 }
 		if (svrScan().threadTotal > tH) { launch(hak, tH, target, gDelay + gWdelay + hDelay + 200); }
 
-		let batchTime = (initWtime + gTime + gWtime + ns.getHackTime(target));
+		let batchTime = (initWtime + gTime + gWtime + hTime);
 		await ns.sleep(batchTime);
 	}
 }
