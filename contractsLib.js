@@ -4,19 +4,10 @@ export function solveCct(type = new String, data) {
 		case 'Find Largest Prime Factor':
 			function isPrime(num = new Number) {
 				const maxFact = Math.floor(Math.sqrt(num));
-				let prime = new Boolean;
-				let i = maxFact;
-				while (i > 1) {
-					if (num % i == 0) {
-						prime = false;
-						break;
-					}
-					else { i--; }
+				for (let i = maxFact; i > 1; i--) {
+					if (num % i == 0) { return false; }
 				}
-				if (prime !== false) {
-					prime = true;
-				}
-				return prime;
+				return true;
 			}
 			let comp = Number(data)
 			let i = comp - 1;
