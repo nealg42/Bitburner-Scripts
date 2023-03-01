@@ -53,8 +53,11 @@ export function solveCct(type = new String, data) {
 			return 'No solution ready'; //TODO: atmpt
 
 		case 'Generate IP Addresses':
-			let digits = data;
-			if (digits.length = 12){return [digits.split(/\d{3}/g).join('.')];}
+			let digits = String(data);
+			switch (digits.length) {
+				case 12: return [digits.split(/\d{3}/g).join('.')];
+				case 4: return [digits.split(/\d/g).join('.')];
+			}
 			return 'No solution ready'; //TODO: atmpt
 
 		case 'Algorithmic Stock Trader I':
