@@ -10,11 +10,9 @@ export function solveCct(type = new String, data) {
 				return true;
 			}
 			let comp = Number(data)
-			let i = comp - 1;
 			let revFactors = new Array
-			while (i > 1) {
+			for (let i = comp - 1; i > 1; i--) {
 				if (comp % i == 0) { revFactors.push(i); }
-				i--;
 			}
 			for (let factor of revFactors) {
 				if (isPrime(factor)) {
