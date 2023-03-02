@@ -4,9 +4,12 @@ import { wkn, grw, hak } from 'lib.js';
 export async function main(ns) {
 	//DEBUG: ns.tail();
 
-	function ramAvail(svr = new String) { return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); }
+	function ramAvail(svr = new String) {
+		return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); 
+	}
 
 	function svrScan() {
+		ns.disableLog('ALL');
 		let servers = ['home'];		//vars that will be returned
 		let targets = new Array;
 		let platforms = new Array;
@@ -46,21 +49,22 @@ export async function main(ns) {
 								ns.write('/contracts/' + fileName + '.txt', serverNew + '\n' + ns.codingcontract.getDescription(file, serverNew), 'w');
 
 								function atmpt(solution, file, serverNew) {
-									if (solution == 'No solution ready') { ns.print('No solution ready'); }
-									else {
+									if (solution !== 'No solution ready') {
 										let msg = ns.codingcontract.attempt(solution, file, serverNew);
+										ns.enableLog('print');
 										if (msg) {
 											ns.print(msg);
 										} else {
 											let type = ns.codingcontract.getContractType(file, serverNew);
 											ns.print('Failed to ' + type + ' ' + file + ' on ' + serverNew);
 										}
+										ns.disableLog('print');
 									}
 								}
 
 								let data = ns.codingcontract.getData(file, serverNew)
 								let solution = solveCct(type, data);
-								ns.print(solveCct(type, data));
+								//ns.print(solveCct(type, data)); DEBUG
 								if (solution != undefined) { atmpt(solution, file, serverNew); }
 							}
 						}//end of contract attempt
@@ -83,7 +87,6 @@ export async function main(ns) {
 								ns.nuke(serverNew);
 							}
 							else if (reqs <= getOpenExes().length) {
-								ns.print('Attempting to break into ' + serverNew);
 								for (let exe of getOpenExes()) {
 									switch (exe) {
 										case 'BruteSSH.exe':
@@ -126,6 +129,7 @@ export async function main(ns) {
 		} while (delta > 0);
 		//results begin
 		ns.write('servers.txt', serverBloc.join('\n\n'), "w");
+		ns.enableLog('ALL');
 		return { servers: servers, platforms: platforms, targets: targets, threadTotal: threadTotal };
 	}
 
