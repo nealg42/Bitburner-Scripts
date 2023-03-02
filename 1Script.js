@@ -128,7 +128,6 @@ export async function main(ns) {
 		ns.write('servers.txt', serverBloc.join('\n\n'), "w");
 		return { servers: servers, platforms: platforms, targets: targets, threadTotal: threadTotal };
 	}
-	ns.disableLog('svrScan');
 
 	//Start of real main
 	//DEBUG: ns.tail();
