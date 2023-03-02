@@ -97,6 +97,8 @@ export async function main(ns) {
 		ns.write('servers.txt', serverBloc.join('\n\n'), "w");
 		return { servers: servers, platforms: platforms, targets: targets, threadTotal: threadTotal };
 	}
+	ns.disableLog('svrScan');
+	
 	function launch(script = new String, threads = new Number, targ = new String, delay = new Number) {
 		ns.print('Attempting to launch ' + threads + ' threads of ' + script);
 		let platforms = svrScan().platforms
