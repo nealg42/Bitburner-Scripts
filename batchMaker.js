@@ -37,6 +37,7 @@ export async function main(ns) {
 		platforms.unshift('home')
 		return { servers: servers, platforms: platforms, targets: targets, threadTotal: threadTotal };
 	}
+	ns.disableLog('svrScan');
 
 
 	function launch(script = new String, threads = new Number, targ = new String, delay = new Number) {
