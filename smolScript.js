@@ -2,6 +2,8 @@
 import { wkn, grw } from 'lib.js';
 export async function main(ns) {
 	function ramAvail(svr = new String) {
+		ns.disableLog('getServerMaxRam');
+		ns.disableLog('getServerUsedRam');
 		return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr);
 	}
 
@@ -14,6 +16,7 @@ export async function main(ns) {
 		let serverBloc = new Array;	//ancilliary vars
 
 		let delta = 0;
+		ns.disableLog('scan')
 		do {
 			delta = 0;
 			for (const server of servers) {
