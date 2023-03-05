@@ -3,11 +3,12 @@ import { solveCct } from 'contractsLib.js';
 import { wkn, grw, hak } from 'lib.js';
 export async function main(ns) {
 	//DEBUG: ns.tail();
+	ns.disableLog('disableLog'); ns.disableLog('enableLog');
+
 
 	function ramAvail(svr = new String) {
-		ns.disableLog('ALL');
+		ns.disableLog('getServerMaxRam'); ns.disableLog('getServerUsedRam');
 		let avail = ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); 
-		ns.enableLog('ALL');
 		return avail;
 	}
 
@@ -137,10 +138,9 @@ export async function main(ns) {
 
 	//Start of real main
 	//DEBUG: ns.tail();
-	let hacnet = 'hacknet.js';
 	if (ramAvail('home') < 1) { ns.spawn('smolScript.js'); }
-	else if (ns.getRunningScript(hacnet, 'home') == null &&
-		ramAvail('home') > ns.getScriptRam(hacnet)) {
+	else if (ns.getRunningScript('hacknet.js', 'home') == null &&
+		ramAvail('home') > ns.getScriptRam('hacknet.js')) {
 		ns.run('hacknet.js');
 	}
 

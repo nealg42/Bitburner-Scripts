@@ -1,9 +1,10 @@
 /** @param {NS} ns */
 import { wkn, grw } from 'lib.js';
 export async function main(ns) {
+	ns.disableLog('disableLog'); ns.disableLog('enableLog');
+
 	function ramAvail(svr = new String) {
-		ns.disableLog('getServerMaxRam');
-		ns.disableLog('getServerUsedRam');
+		ns.disableLog('getServerMaxRam'); ns.disableLog('getServerUsedRam');
 		return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr);
 	}
 
@@ -16,7 +17,7 @@ export async function main(ns) {
 		let serverBloc = new Array;	//ancilliary vars
 
 		let delta = 0;
-		ns.disableLog('scan')
+		ns.disableLog('scan'); ns.disableLog('scp');
 		do {
 			delta = 0;
 			for (const server of servers) {
@@ -83,7 +84,9 @@ export async function main(ns) {
 						//designate targets or platforms, and count one-off threads
 						if (serverO.hasAdminRights) {
 							serverBloc.push(serverBloc.pop() + '\nHackable: Y');
+							ns.disableLog('getServerMaxMoney');
 							if (ns.getServerMaxMoney(serverNew) > 0) { targets.push(serverNew); }
+							ns.enableLog('getServerMaxMoney');
 							if (ramAvail(serverNew) > 1.75) {
 								platforms.push(serverNew);
 								threadTotal += Math.floor(ramAvail(serverNew) / 1.75);
@@ -101,6 +104,7 @@ export async function main(ns) {
 		return { servers: servers, platforms: platforms, targets: targets, threadTotal: threadTotal };
 	}
 	function launch(script = new String, threads = new Number, targ = new String, delay = new Number) {
+		ns.disableLog('scp');
 		ns.print('Attempting to launch ' + threads + ' threads of ' + script);
 		let platforms = svrScan().platforms
 		while (threads > 0) {
