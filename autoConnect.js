@@ -5,9 +5,10 @@ export async function main(ns) {
 		while (route[0] != 'home') { route.unshift(ns.scan(route[0])[0]); }
 		return route;
 	}
-
-	for (let node of svrRoute(ns.args[0])) {
-		ns.singularity.connect(node);
-	}
-	ns.singularity.connect(ns.args[0]);
+	if (ns.singularity) {
+		for (let node of svrRoute(ns.args[0])) {
+			ns.singularity.connect(node);
+		}
+		ns.singularity.connect(ns.args[0]);
+	} else ns.tprint('This script requires the Singularity, Source File 4.');
 }
