@@ -5,11 +5,15 @@ export async function main(ns) {
 	//DEBUG: ns.tail();
 
 	function ramAvail(svr = new String) {
-		return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); 
+		ns.disableLog('ALL');
+		let avail = ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); 
+		ns.enableLog('ALL');
+		return avail;
 	}
 
 	function svrScan() {
 		ns.disableLog('ALL');
+		ns.enableLog('print');
 		let servers = ['home'];		//vars that will be returned
 		let targets = new Array;
 		let platforms = new Array;
@@ -51,17 +55,15 @@ export async function main(ns) {
 								function atmpt(solution, file, serverNew) {
 									if (solution !== 'No solution ready') {
 										let msg = ns.codingcontract.attempt(solution, file, serverNew);
-										ns.enableLog('print');
 										if (msg) {
 											ns.print(msg);
 										} else {
 											let type = ns.codingcontract.getContractType(file, serverNew);
 											ns.print('Failed to ' + type + ' ' + file + ' on ' + serverNew);
 										}
-										ns.disableLog('print');
 									}
 								}
-
+								
 								let data = ns.codingcontract.getData(file, serverNew)
 								let solution = solveCct(type, data);
 								//ns.print(solveCct(type, data)); DEBUG

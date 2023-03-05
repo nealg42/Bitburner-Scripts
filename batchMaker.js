@@ -1,16 +1,19 @@
 /** @param {NS} ns */
 import { grw, hak, wkn } from 'lib.js'
 export async function main(ns) {
-	//ns.tail();
-	function ramAvail(svr = new String) { return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); }
-	//function tAvail(svr = new String, script = new String) = Math.floor(ramAvail(svr) / ns.getScriptRam(script));
+	//DEBUG: ns.tail();
+	function ramAvail(svr = new String) {
+		ns.disableLog('getServerMaxRam'); ns.disableLog('getServerUsedRam');
+		let avail = ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr);
+		return avail;
+	}
 
 	function svrScan() {
 		let servers = ['home'];
 		let targets = new Array;
 		let platforms = new Array;
 		let threadTotal = new Number;
-
+		ns.disableLog('scan'); ns.disableLog('getServerMaxMoney');
 
 		let delta = 0;
 		do {
@@ -40,7 +43,7 @@ export async function main(ns) {
 
 
 	function launch(script = new String, threads = new Number, targ = new String, delay = new Number) {
-		ns.print('Attempting to launch ' + threads + ' threads of ' + script);
+		ns.disableLog('scp'); ns.disableLog('getScriptRam');
 		let platforms = svrScan().platforms
 		while (threads > 0) {
 			let tAvail = Math.floor(ramAvail(platforms[0]) / ns.getScriptRam(script));
@@ -58,8 +61,11 @@ export async function main(ns) {
 		}
 	}
 
-	const target = ns.args[0]
+	ns.disableLog('ALL');
+	ns.enableLog('print');
+	const target = ns.args[0];
 	while (svrScan().threadTotal > 0) {
+		ns.print('\n\nPreparing batch for ' + target);
 		let initWtime = 0;
 		let gTime = 0;
 		let gDelay = 0;
@@ -67,10 +73,10 @@ export async function main(ns) {
 		let gWdelay = 0;
 
 		let wknTgt = (ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target));
-		ns.print('Initial wkn target:' + wknTgt);
+		ns.print('Initial security:' + wknTgt);
 		if (wknTgt > 0) {
 			let tIw = Math.ceil(wknTgt / ns.weakenAnalyze(1));
-			ns.print('tIW: ' + tIw);
+			//DEBUG: ns.print('tIW: ' + tIw);
 			if (tIw < svrScan().threadTotal && tIw > 0) {
 				launch(wkn, tIw, target, 0);
 			}
@@ -78,6 +84,7 @@ export async function main(ns) {
 		}
 
 		let growth = ns.getServerMaxMoney(target) / ns.getServerMoneyAvailable(target);
+		ns.print('Growth Target: $' + growth.toLocaleString);
 		if (growth > 1) {
 			let tG = new Number;
 			if (growth < Infinity) { tG = Math.ceil(ns.growthAnalyze(target, growth)); }
@@ -87,6 +94,7 @@ export async function main(ns) {
 			if (gDelay < 0) { gDelay = 0; }
 			if (svrScan().threadTotal > tG && tG > 0) { launch(grw, tG, target, gDelay + 200); }
 			let gSec = ns.growthAnalyzeSecurity(tG, target);
+			ns.print('Growth Sec Impact: ' + gSec);
 			let tGw = Math.ceil(gSec / ns.weakenAnalyze(1));
 			gWtime = Math.ceil(ns.getWeakenTime(target));
 			gWdelay = gTime - gWtime;
