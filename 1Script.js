@@ -1,6 +1,6 @@
 /** @param {NS} ns */
 import { solveCct } from 'contractsLib.js';
-import { wkn, grw, hak } from 'lib.js';
+import { wkn, grw, hak, opEx } from 'lib.js';
 export async function main(ns) {
 	//DEBUG: ns.tail();
 
@@ -73,7 +73,7 @@ export async function main(ns) {
 								let exes = ns.ls('home', '.exe');
 								let open = new Array;
 								for (let file of exes) {
-									if (file.match(/(SSH|FTP|SMTP|HTTP|SQL).*?\.exe$/)) { open.push(file); }
+									if (file.match(opEx)) { open.push(file); }
 								}
 								return open;
 							}
@@ -82,8 +82,21 @@ export async function main(ns) {
 							if (reqs <= serverO.openPortCount) {
 								ns.nuke(serverNew);
 							}
-							else if (reqs <= getOpenExes().length) {
-								ns.print('Attempting to break into ' + serverNew);
+							else if (ns.singularity && reqs > getOpenExes().length) {
+								if (ns.singularity.purchaseTor()) {
+									let openers = ns.singularity.getDarkwebPrograms().filter(
+										function open(val, idx, arry) {
+										val.match(opEx);
+									});
+									for (let program of openers) {
+										const cost = ns.singularity.getDarkwebProgramCost(program);
+										if (cost <= ns.getPlayer().money && cost > 0) {
+											ns.singularity.purchaseProgram(program);
+										}
+									}
+								}
+							}
+							if (reqs <= getOpenExes().length) {
 								for (let exe of getOpenExes()) {
 									switch (exe) {
 										case 'BruteSSH.exe':
