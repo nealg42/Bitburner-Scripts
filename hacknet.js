@@ -31,16 +31,26 @@ export async function main(ns) {
 		return min;
 	}
 
+	function recoupeTime(cost = new Number) {
+		let gainRate = new Number;
+		for (let node of nodeIdx) {
+			gainRate += ns.hacknet.getNodeStats(node).production;
+		}
+		let recoupeSec = cost / gainRate;
+		return recoupeSec * 1000;
+	}
+
 	if (ns.hacknet.numNodes() == 0) { ns.hacknet.purchaseNode(); }
-	while (ns.hacknet.getCoreUpgradeCost(minCores(nodeId()), 1) != Infinity) {
+	while (ns.hacknet.numNodes() < ns.hacknet.maxNumNodes() || ns.getPurchasedServerLimit() > ns.getPurchasedServers().length) {
 		let nodeIdx = nodeId();
 		let lvlMin = minLvl(nodeIdx);
 		let ramMin = minRam(nodeIdx);
 		let coresMin = minCores(nodeIdx);
 
 		let minCosts = [ns.hacknet.getLevelUpgradeCost(lvlMin, 1), ns.hacknet.getRamUpgradeCost(ramMin, 1),
-		ns.hacknet.getCoreUpgradeCost(coresMin, 1), ns.hacknet.getPurchaseNodeCost()];
-		if (ns.singularity) {minCosts.push(ns.singularity.getUpgradeHomeRamCost(), ns.singularity.getUpgradeHomeCoresCost());}
+		ns.hacknet.getCoreUpgradeCost(coresMin, 1), ns.hacknet.getPurchaseNodeCost(),
+		ns.getPurchasedServerCost(ns.getPurchasedServerMaxRam())];
+		if (ns.singularity) { minCosts.push(ns.singularity.getUpgradeHomeRamCost(), ns.singularity.getUpgradeHomeCoresCost()); }
 
 		let minCost = Math.min.apply(null, minCosts);
 		let mIndex = minCosts.indexOf(minCost);
@@ -48,31 +58,33 @@ export async function main(ns) {
 			switch (mIndex) {
 				case 0:
 					ns.hacknet.upgradeLevel(lvlMin, 1);
+					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 1:
 					ns.hacknet.upgradeRam(ramMin, 1);
+					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 2:
 					ns.hacknet.upgradeCore(coresMin, 1);
+					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 3:
 					ns.hacknet.purchaseNode()
+					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 4:
-					ns.singularity.upgradeHomeRam();
+					ns.purchaseServer('big-gun', ns.getPurchasedServerMaxRam());
+					await ns.sleep('60000');
 					break;
 				case 5:
+					ns.singularity.upgradeHomeRam();
+					await ns.sleep('60000');
+					break;
+				case 6:
 					ns.singularity.upgradeHomeCores();
+					await ns.sleep('60000');
 					break;
 			}
-		}
-		await ns.sleep(200);
-	}
-	while (ns.getPurchasedServerLimit() > ns.getPurchasedServers().length) {
-		if (ns.getPlayer().money >= ns.getPurchasedServerCost(ns.getPurchasedServerMaxRam())) { ns.purchaseServer('big-gun', ns.getPurchasedServerMaxRam()); }
-		//else if (ns.getPlayer().money >= ns.singularity.getUpgradeHomeRamCost()) { ns.singularity.upgradeHomeRam(); }
-		else {
-			await ns.sleep(60000);
 		}
 	}
 }
