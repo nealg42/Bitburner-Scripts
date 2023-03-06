@@ -1,5 +1,5 @@
 /** @param {NS} ns */
-import { wkn, grw } from 'lib.js';
+import { wkn, grw, opEx } from 'lib.js';
 export async function main(ns) {
 	ns.disableLog('disableLog'); ns.disableLog('enableLog');
 
@@ -47,7 +47,7 @@ export async function main(ns) {
 								let exes = ns.ls('home', '.exe');
 								let open = new Array;
 								for (let file of exes) {
-									if (file.match(/(SSH|FTP|SMTP|HTTP|SQL).*?\.exe$/)) { open.push(file); }
+									if (file.match(opEx)) { open.push(file); }
 								}
 								return open;
 							}
