@@ -32,7 +32,6 @@ export async function main(ns) {
 	}
 
 	if (ns.hacknet.numNodes() == 0) { ns.hacknet.purchaseNode(); }
-
 	while (ns.hacknet.getCoreUpgradeCost(minCores(nodeId()), 1) != Infinity) {
 		let nodeIdx = nodeId();
 		let lvlMin = minLvl(nodeIdx);
@@ -41,6 +40,7 @@ export async function main(ns) {
 
 		let minCosts = [ns.hacknet.getLevelUpgradeCost(lvlMin, 1), ns.hacknet.getRamUpgradeCost(ramMin, 1),
 		ns.hacknet.getCoreUpgradeCost(coresMin, 1), ns.hacknet.getPurchaseNodeCost()];
+		if (ns.singularity) {minCosts.push(ns.singularity.getUpgradeHomeRamCost(), ns.singularity.getUpgradeHomeCoresCost());}
 
 		let minCost = Math.min.apply(null, minCosts);
 		let mIndex = minCosts.indexOf(minCost);
@@ -57,6 +57,12 @@ export async function main(ns) {
 					break;
 				case 3:
 					ns.hacknet.purchaseNode()
+					break;
+				case 4:
+					ns.singularity.upgradeHomeRam();
+					break;
+				case 5:
+					ns.singularity.upgradeHomeCores();
 					break;
 			}
 		}
