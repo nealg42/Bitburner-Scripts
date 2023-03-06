@@ -10,30 +10,30 @@ export async function main(ns) {
 		return nodeIdx;
 	}
 
-	function minLvl(nodeIdx = new Array) {
+	function minLvl() {
 		let lvlArry = new Array;
-		for (let node of nodeIdx) { lvlArry.push(ns.hacknet.getNodeStats(node).level); }
+		for (let node of nodeId()) { lvlArry.push(ns.hacknet.getNodeStats(node).level); }
 		let min = lvlArry.indexOf(Math.min.apply(null, lvlArry));
 		return min;
 	}
 
-	function minRam(nodeIdx = new Array) {
+	function minRam() {
 		let ramArry = new Array
-		for (let node of nodeIdx) { ramArry.push(ns.hacknet.getNodeStats(node).ram); }
+		for (let node of nodeId()) { ramArry.push(ns.hacknet.getNodeStats(node).ram); }
 		let min = ramArry.indexOf(Math.min.apply(null, ramArry));
 		return min;
 	}
 
-	function minCores(nodeIdx = new Array) {
+	function minCores() {
 		let coresArry = new Array
-		for (let node of nodeIdx) { coresArry.push(ns.hacknet.getNodeStats(node).cores); }
+		for (let node of nodeId()) { coresArry.push(ns.hacknet.getNodeStats(node).cores); }
 		let min = coresArry.indexOf(Math.min.apply(null, coresArry));
 		return min;
 	}
 
 	function recoupeTime(cost = new Number) {
 		let gainRate = new Number;
-		for (let node of nodeIdx) {
+		for (let node of nodeId()) {
 			gainRate += ns.hacknet.getNodeStats(node).production;
 		}
 		let recoupeSec = cost / gainRate;
@@ -42,13 +42,9 @@ export async function main(ns) {
 
 	if (ns.hacknet.numNodes() == 0) { ns.hacknet.purchaseNode(); }
 	while (ns.hacknet.numNodes() < ns.hacknet.maxNumNodes() || ns.getPurchasedServerLimit() > ns.getPurchasedServers().length) {
-		let nodeIdx = nodeId();
-		let lvlMin = minLvl(nodeIdx);
-		let ramMin = minRam(nodeIdx);
-		let coresMin = minCores(nodeIdx);
 
-		let minCosts = [ns.hacknet.getLevelUpgradeCost(lvlMin, 1), ns.hacknet.getRamUpgradeCost(ramMin, 1),
-		ns.hacknet.getCoreUpgradeCost(coresMin, 1), ns.hacknet.getPurchaseNodeCost(),
+		let minCosts = [ns.hacknet.getLevelUpgradeCost(minLvl(), 1), ns.hacknet.getRamUpgradeCost(minRam(), 1),
+		ns.hacknet.getCoreUpgradeCost(minCores(), 1), ns.hacknet.getPurchaseNodeCost(),
 		ns.getPurchasedServerCost(ns.getPurchasedServerMaxRam())];
 		if (ns.singularity) { minCosts.push(ns.singularity.getUpgradeHomeRamCost(), ns.singularity.getUpgradeHomeCoresCost()); }
 
@@ -85,6 +81,6 @@ export async function main(ns) {
 					await ns.sleep('60000');
 					break;
 			}
-		}
+		} else {await ns.sleep('60000');}
 	}
 }
