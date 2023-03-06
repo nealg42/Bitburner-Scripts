@@ -5,6 +5,8 @@ export const wkn = 'tWeak.js'
 export const grw = 'tGrow.js'
 export const hak = 'tHack.js'
 
+export const opEx = /(SSH|FTP|SMTP|HTTP|SQL).*?\.exe$/;
+
 
 //NS based functions that I'm not sure how to import, but I like to have them recorded
 export function tAvail(svr = new String, script = new String) {
