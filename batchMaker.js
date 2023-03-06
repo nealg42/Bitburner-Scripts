@@ -43,7 +43,7 @@ export async function main(ns) {
 
 
 	function launch(script = new String, threads = new Number, targ = new String, delay = new Number) {
-		ns.disableLog('scp'); ns.disableLog('getScriptRam');
+		ns.disableLog('scp'); ns.disableLog('getScriptRam');  ns.enableLog('exec');
 		let platforms = svrScan().platforms
 		while (threads > 0) {
 			let tAvail = Math.floor(ramAvail(platforms[0]) / ns.getScriptRam(script));
