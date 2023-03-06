@@ -3,10 +3,18 @@ import { solveCct } from 'contractsLib.js';
 import { wkn, grw, hak, opEx } from 'lib.js';
 export async function main(ns) {
 	//DEBUG: ns.tail();
+	ns.disableLog('disableLog'); ns.disableLog('enableLog');
 
-	function ramAvail(svr = new String) { return ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); }
+
+	function ramAvail(svr = new String) {
+		ns.disableLog('getServerMaxRam'); ns.disableLog('getServerUsedRam');
+		let avail = ns.getServerMaxRam(svr) - ns.getServerUsedRam(svr); 
+		return avail;
+	}
 
 	function svrScan() {
+		ns.disableLog('ALL');
+		ns.enableLog('print');
 		let servers = ['home'];		//vars that will be returned
 		let targets = new Array;
 		let platforms = new Array;
@@ -46,8 +54,7 @@ export async function main(ns) {
 								ns.write('/contracts/' + fileName + '.txt', serverNew + '\n' + ns.codingcontract.getDescription(file, serverNew), 'w');
 
 								function atmpt(solution, file, serverNew) {
-									if (solution == 'No solution ready') { ns.print('No solution ready'); }
-									else {
+									if (solution !== 'No solution ready') {
 										let msg = ns.codingcontract.attempt(solution, file, serverNew);
 										if (msg) {
 											ns.print(msg);
@@ -57,10 +64,10 @@ export async function main(ns) {
 										}
 									}
 								}
-
+								
 								let data = ns.codingcontract.getData(file, serverNew)
 								let solution = solveCct(type, data);
-								ns.print(solveCct(type, data));
+								//ns.print(solveCct(type, data)); DEBUG
 								if (solution != undefined) { atmpt(solution, file, serverNew); }
 							}
 						}//end of contract attempt
@@ -139,15 +146,15 @@ export async function main(ns) {
 		} while (delta > 0);
 		//results begin
 		ns.write('servers.txt', serverBloc.join('\n\n'), "w");
+		ns.enableLog('ALL');
 		return { servers: servers, platforms: platforms, targets: targets, threadTotal: threadTotal };
 	}
 
 	//Start of real main
 	//DEBUG: ns.tail();
-	let hacnet = 'hacknet.js';
 	if (ramAvail('home') < 1) { ns.spawn('smolScript.js'); }
-	else if (ns.getRunningScript(hacnet, 'home') == null &&
-		ramAvail('home') > ns.getScriptRam(hacnet)) {
+	else if (ns.getRunningScript('hacknet.js', 'home') == null &&
+		ramAvail('home') > ns.getScriptRam('hacknet.js')) {
 		ns.run('hacknet.js');
 	}
 
