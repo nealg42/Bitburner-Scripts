@@ -53,15 +53,15 @@ export async function main(ns) {
 		if (ns.getPlayer().money > minCost) {
 			switch (mIndex) {
 				case 0:
-					ns.hacknet.upgradeLevel(lvlMin, 1);
+					ns.hacknet.upgradeLevel(minLvl(), 1);
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 1:
-					ns.hacknet.upgradeRam(ramMin, 1);
+					ns.hacknet.upgradeRam(minRam(), 1);
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 2:
-					ns.hacknet.upgradeCore(coresMin, 1);
+					ns.hacknet.upgradeCore(minCores(), 1);
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 3:
