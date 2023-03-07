@@ -75,6 +75,6 @@ export async function main(ns) {
 					break;
 			}
 			await ns.sleep('200');
-		} else if (mIndex < 4) { await ns.sleep(timeTillCost(minCost)) }
+		} else {await ns.sleep(timeTillCost(minCost))}
 	}
 }
