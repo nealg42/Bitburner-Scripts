@@ -31,7 +31,7 @@ export async function main(ns) {
 		return min;
 	}
 
-	function recoupeTime(cost = new Number) {
+	function timeTillCost(cost = new Number) {
 		let gainRate = new Number;
 		for (let node of nodeId()) {
 			gainRate += ns.hacknet.getNodeStats(node).production;
@@ -54,33 +54,27 @@ export async function main(ns) {
 			switch (mIndex) {
 				case 0:
 					ns.hacknet.upgradeLevel(minLvl(), 1);
-					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 1:
 					ns.hacknet.upgradeRam(minRam(), 1);
-					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 2:
 					ns.hacknet.upgradeCore(minCores(), 1);
-					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 3:
 					ns.hacknet.purchaseNode()
-					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 4:
 					ns.purchaseServer('big-gun', ns.getPurchasedServerMaxRam());
-					await ns.sleep('60000');
 					break;
 				case 5:
 					ns.singularity.upgradeHomeRam();
-					await ns.sleep('60000');
 					break;
 				case 6:
 					ns.singularity.upgradeHomeCores();
-					await ns.sleep('60000');
 					break;
 			}
-		} else {await ns.sleep('60000');}
+			await ns.sleep('200');
+		} else {await ns.sleep(timeTillCost(minCost))}
 	}
 }
