@@ -84,7 +84,7 @@ export async function main(ns) {
 		}
 
 		let growth = ns.getServerMaxMoney(target) / ns.getServerMoneyAvailable(target);
-		ns.print('Growth Target: $' + growth.toLocaleString);
+		ns.print('Growth Factor: ' + growth);
 		if (growth > 1) {
 			let tG = new Number;
 			if (growth < Infinity) { tG = Math.ceil(ns.growthAnalyze(target, growth)); }
