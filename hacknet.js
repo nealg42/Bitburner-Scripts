@@ -54,18 +54,22 @@ export async function main(ns) {
 			switch (mIndex) {
 				case 0:
 					ns.hacknet.upgradeLevel(minLvl(), 1);
+					ns.print('\nUpgraded Lvl of Node ' + minLvl() + ' for $' + minCost.toLocaleString());
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 1:
 					ns.hacknet.upgradeRam(minRam(), 1);
+					ns.print('\nUpgraded RAM of Node ' + minRam() + ' for $' + minCost.toLocaleString());
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 2:
 					ns.hacknet.upgradeCore(minCores(), 1);
+					ns.print('\nUpgraded RAM of Node ' + minCores() + ' for $' + minCost.toLocaleString());
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 3:
-					ns.hacknet.purchaseNode()
+					ns.hacknet.purchaseNode();
+					ns.print('\nPurchased Node for $' + minCost.toLocaleString());
 					await ns.sleep(recoupeTime(minCost));
 					break;
 				case 4:
@@ -81,6 +85,6 @@ export async function main(ns) {
 					await ns.sleep('60000');
 					break;
 			}
-		} else {await ns.sleep('60000');}
+		} else { await ns.sleep('60000'); }
 	}
 }
